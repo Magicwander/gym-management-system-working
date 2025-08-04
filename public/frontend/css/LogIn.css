@@ -1,0 +1,22 @@
+body {
+      background-color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .login-logo {
+      width: 100px;
+      margin: 20px auto 10px;
+      display: block;
+    }
+    .card-footer {
+      background-color: transparent;
+      border-top: none;
+    }

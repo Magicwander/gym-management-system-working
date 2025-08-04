@@ -1,0 +1,136 @@
+#trainer {
+      background-color: #343434;
+      font-family: Arial, sans-serif;
+      padding: 40px 0;
+    }
+
+    .trainer-title {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      position: relative;
+      margin-bottom: 50px;
+      color: white;
+      animation: fadeSlideDown 1s ease-in-out;
+    }
+
+    .trainer-title::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background-color: rgb(255, 0, 0);
+      margin: 10px auto 0 auto;
+      border-radius: 2px;
+    }
+
+    /*
+    .cards-wrapper {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .trainer-card {
+      max-width: 350px;
+      margin: 0 15px;
+      animation: fadeSlideUp 1.2s ease forwards;
+      opacity: 0;
+    }
+
+    .trainer-card:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .trainer-card:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .card-body {
+      padding: 0;
+      height: 490px;
+      overflow: hidden;
+    }
+
+    .card-body img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .card-body img:hover {
+      transform: scale(1.05);
+    }
+
+    .card-header,
+    .card-footer {
+      font-weight: bold;
+    }
+
+    .trainer-description {
+      max-width: 350px;
+      margin: 15px auto 40px auto;
+      text-align: center;
+      color: white;
+      font-size: 1rem;
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+
+    .text-center:nth-child(1) .trainer-description {
+      animation-delay: 0.5s;
+    }
+
+    .text-center:nth-child(2) .trainer-description {
+      animation-delay: 0.8s;
+    }
+
+    .text-center:nth-child(3) .trainer-description {
+      animation-delay: 1.1s;
+    }*/
+
+    .bottom-paragraph {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /*
+    Keyframes 
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeSlideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }*/

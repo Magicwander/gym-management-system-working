@@ -1,0 +1,60 @@
+    body {
+      background-color: #1e1e1e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+    .modal-content {
+      background-color: #2d2d2d;
+      color: white;
+      border-radius: 12px;
+      border: 2px solid #444;
+    }
+
+    .modal-header {
+      background-color: #444;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .form-label {
+      color: #f0f0f0;
+    }
+
+    .form-control, .form-select {
+      background-color: #3a3a3a;
+      border: 1px solid #666;
+      color: #fff;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #ff6464;
+      box-shadow: 0 0 0 0.2rem rgba(255, 100, 100, 0.25);
+    }
+
+    .form-check-label {
+      color: #ccc;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+
+    .btn-close {
+      filter: invert(1);
+    }
+
+    ::placeholder {
+      color: #bbb;
+    }
+  
+      
+  
