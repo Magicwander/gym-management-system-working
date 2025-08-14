@@ -165,10 +165,10 @@
                                     <a href="{{ route('admin.accounts.trainers.edit', $trainer) }}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.accounts.trainers.destroy', $trainer) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('admin.accounts.trainers.destroy', $trainer) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this trainer? This will also remove all assigned workouts.')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure? This will also remove all assigned workouts.')">
+                                        <button type="submit" class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

@@ -148,12 +148,11 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.accounts.members.destroy', $member) }}"
-                                          method="POST" style="display: inline;">
+                                          method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this member?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger"
-                                                title="Delete"
-                                                onclick="return confirm('Are you sure you want to delete this member?')">
+                                                title="Delete">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
