@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Member;
-use App\Models\Admin\Trainer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,12 +15,12 @@ class AccountController extends Controller
     public function members()
     {
         $members = Member::latest()->paginate(15);
-        return view('admin.accounts.members.index', compact('members'));
+        return view('admin.members.index', compact('members'));
     }
     
     public function createMember()
     {
-        return view('admin.accounts.members.create');
+        return view('admin.members.create');
     }
     
     public function storeMember(Request $request)
@@ -46,19 +45,19 @@ class AccountController extends Controller
         
         Member::create($validated);
         
-        return redirect()->route('admin.accounts.members')
+        return redirect()->route('admin.accounts.members.index')
             ->with('success', 'Member created successfully.');
     }
     
     public function showMember(Member $member)
     {
         $member->load(['bookings.trainer', 'payments']);
-        return view('admin.accounts.members.show', compact('member'));
+        return view('admin.members.show', compact('member'));
     }
     
     public function editMember(Member $member)
     {
-        return view('admin.accounts.members.edit', compact('member'));
+        return view('admin.members.edit', compact('member'));
     }
     
     public function updateMember(Request $request, Member $member)
@@ -84,27 +83,27 @@ class AccountController extends Controller
         
         $member->update($validated);
         
-        return redirect()->route('admin.accounts.members')
+        return redirect()->route('admin.accounts.members.index')
             ->with('success', 'Member updated successfully.');
     }
     
     public function destroyMember(Member $member)
     {
         $member->delete();
-        return redirect()->route('admin.accounts.members')
+        return redirect()->route('admin.accounts.members.index')
             ->with('success', 'Member deleted successfully.');
     }
     
     // Trainer Management
     public function trainers()
     {
-        $trainers = Trainer::latest()->paginate(15);
-        return view('admin.accounts.trainers.index', compact('trainers'));
+        $trainers = User::where('role', 'trainer')->latest()->paginate(15);
+        return view('admin.trainers.index', compact('trainers'));
     }
     
     public function createTrainer()
     {
-        return view('admin.accounts.trainers.create');
+        return view('admin.trainers.create');
     }
     
     public function storeTrainer(Request $request)
@@ -127,24 +126,23 @@ class AccountController extends Controller
         $validated['role'] = 'trainer';
         $validated['is_active'] = true;
         
-        Trainer::create($validated);
+        User::create($validated);
         
-        return redirect()->route('admin.accounts.trainers')
+        return redirect()->route('admin.accounts.trainers.index')
             ->with('success', 'Trainer created successfully.');
     }
     
-    public function showTrainer(Trainer $trainer)
+    public function showTrainer(User $trainer)
     {
-        $trainer->load(['bookings.member', 'workouts.member']);
-        return view('admin.accounts.trainers.show', compact('trainer'));
+        return view('admin.trainers.show', compact('trainer'));
     }
     
-    public function editTrainer(Trainer $trainer)
+    public function editTrainer(User $trainer)
     {
-        return view('admin.accounts.trainers.edit', compact('trainer'));
+        return view('admin.trainers.edit', compact('trainer'));
     }
     
-    public function updateTrainer(Request $request, Trainer $trainer)
+    public function updateTrainer(Request $request, User $trainer)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -167,14 +165,14 @@ class AccountController extends Controller
         
         $trainer->update($validated);
         
-        return redirect()->route('admin.accounts.trainers')
+        return redirect()->route('admin.accounts.trainers.index')
             ->with('success', 'Trainer updated successfully.');
     }
     
-    public function destroyTrainer(Trainer $trainer)
+    public function destroyTrainer(User $trainer)
     {
         $trainer->delete();
-        return redirect()->route('admin.accounts.trainers')
+        return redirect()->route('admin.accounts.trainers.index')
             ->with('success', 'Trainer deleted successfully.');
     }
     

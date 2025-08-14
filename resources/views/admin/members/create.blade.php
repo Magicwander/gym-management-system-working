@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Add New Member</h1>
-        <a href="{{ route('admin.members.index') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('admin.accounts.members.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back to Members
         </a>
     </div>
@@ -18,7 +18,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Member Information</h6>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.members.store') }}" method="POST">
+                    <form action="{{ route('admin.accounts.members.store') }}" method="POST">
                         @csrf
                         
                         <div class="row">
@@ -133,7 +133,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>Create Member
                             </button>
-                            <a href="{{ route('admin.members.index') }}" class="btn btn-secondary ms-2">Cancel</a>
+                            <a href="{{ route('admin.accounts.members.index') }}" class="btn btn-secondary ms-2">Cancel</a>
                         </div>
                     </form>
                 </div>

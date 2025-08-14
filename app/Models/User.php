@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Trainer\Workout;
+use App\Models\Membership;
 
 class User extends Authenticatable
 {
@@ -88,7 +90,7 @@ class User extends Authenticatable
      */
     public function memberships()
     {
-        return $this->hasMany(Membership::class);
+        return $this->hasMany(Membership::class, 'user_id');
     }
 
     /**
@@ -96,7 +98,7 @@ class User extends Authenticatable
      */
     public function workouts()
     {
-        return $this->hasMany(Workout::class);
+        return $this->hasMany(Workout::class, 'user_id');
     }
 
     /**

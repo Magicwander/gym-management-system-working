@@ -24,10 +24,10 @@
             <i class="fas fa-users me-2"></i>Members Management
         </h1>
         <div class="btn-group">
-            <a href="{{ route('admin.members.create') }}" class="btn btn-primary btn-sm">
+            <a href="{{ route('admin.accounts.members.create') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus fa-sm me-1"></i> Add New Member
             </a>
-            <a href="{{ route('admin.members.export') }}" class="btn btn-success btn-sm">
+            <a href="#" class="btn btn-success btn-sm">
                 <i class="fas fa-download fa-sm me-1"></i> Export
             </a>
         </div>
@@ -139,15 +139,15 @@
                             <td>{{ $member->created_at->format('M d, Y') }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('admin.members.show', $member) }}"
+                                    <a href="{{ route('admin.accounts.members.show', $member) }}"
                                        class="btn btn-info" title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('admin.members.edit', $member) }}"
+                                    <a href="{{ route('admin.accounts.members.edit', $member) }}"
                                        class="btn btn-warning" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.members.destroy', $member) }}"
+                                    <form action="{{ route('admin.accounts.members.destroy', $member) }}"
                                           method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
@@ -167,7 +167,7 @@
                                     <i class="fas fa-users fa-3x mb-3"></i>
                                     <h5>No Members Found</h5>
                                     <p>Start by adding your first member to the system.</p>
-                                    <a href="{{ route('admin.members.create') }}" class="btn btn-primary">
+                                    <a href="{{ route('admin.accounts.members.create') }}" class="btn btn-primary">
                                         <i class="fas fa-plus me-1"></i>Add First Member
                                     </a>
                                 </div>

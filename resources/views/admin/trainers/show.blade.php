@@ -7,10 +7,10 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Trainer Details</h1>
         <div>
-            <a href="{{ route('admin.trainers.edit', $trainer) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('admin.accounts.trainers.edit', $trainer) }}" class="btn btn-warning btn-sm">
                 <i class="fas fa-edit fa-sm text-white-50"></i> Edit Trainer
             </a>
-            <a href="{{ route('admin.trainers.index') }}" class="btn btn-secondary btn-sm">
+            <a href="{{ route('admin.accounts.trainers.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back to Trainers
             </a>
         </div>
@@ -114,12 +114,12 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.workouts.show', $workout) }}" class="btn btn-info btn-sm">
+                                        {{-- <a href="{{ route('admin.workouts.show', $workout) }}" class="btn btn-info btn-sm">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.workouts.edit', $workout) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i>
-                                        </a>
+                                        </a> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -131,9 +131,9 @@
                 <div class="text-center py-4">
                     <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No workouts assigned yet</p>
-                    <a href="{{ route('admin.workouts.create') }}" class="btn btn-primary btn-sm">
+                    {{-- <a href="{{ route('admin.workouts.create') }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Assign Workout
-                    </a>
+                    </a> --}}
                 </div>
             @endif
         </div>

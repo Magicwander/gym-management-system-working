@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Trainers Management</h1>
-        <a href="{{ route('admin.trainers.create') }}" class="btn btn-primary btn-sm">
+        <a href="{{ route('admin.accounts.trainers.create') }}" class="btn btn-primary btn-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Add New Trainer
         </a>
     </div>
@@ -159,13 +159,13 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{{ route('admin.trainers.show', $trainer) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('admin.accounts.trainers.show', $trainer) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('admin.trainers.edit', $trainer) }}" class="btn btn-warning btn-sm">
+                                    <a href="{{ route('admin.accounts.trainers.edit', $trainer) }}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.trainers.destroy', $trainer) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('admin.accounts.trainers.destroy', $trainer) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure? This will also remove all assigned workouts.')">

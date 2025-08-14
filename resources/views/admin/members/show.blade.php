@@ -7,10 +7,10 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Member Details</h1>
         <div>
-            <a href="{{ route('admin.members.edit', $member) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('admin.accounts.members.edit', $member) }}" class="btn btn-warning btn-sm">
                 <i class="fas fa-edit fa-sm text-white-50"></i> Edit Member
             </a>
-            <a href="{{ route('admin.members.index') }}" class="btn btn-secondary btn-sm">
+            <a href="{{ route('admin.accounts.members.index') }}" class="btn btn-secondary btn-sm">
                 <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back to Members
             </a>
         </div>
@@ -120,9 +120,9 @@
                 <div class="text-center py-4">
                     <i class="fas fa-id-card fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No membership history found</p>
-                    <a href="{{ route('admin.memberships.create') }}" class="btn btn-primary btn-sm">
+                    <button class="btn btn-primary btn-sm" disabled>
                         <i class="fas fa-plus"></i> Create Membership
-                    </a>
+                    </button>
                 </div>
             @endif
         </div>
@@ -169,9 +169,9 @@
                 <div class="text-center py-4">
                     <i class="fas fa-running fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No workouts found</p>
-                    <a href="{{ route('admin.workouts.create') }}" class="btn btn-primary btn-sm">
+                    <button class="btn btn-primary btn-sm" disabled>
                         <i class="fas fa-plus"></i> Create Workout
-                    </a>
+                    </button>
                 </div>
             @endif
         </div>
