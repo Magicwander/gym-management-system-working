@@ -314,8 +314,8 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
+                <form method="POST" action="{{ route('login.test') }}">
+                    {{-- @csrf --}}
 
                     <!-- Email Address -->
                     <div class="form-floating">
@@ -370,13 +370,13 @@
                 <div class="demo-credentials">
                     <h6><i class="fas fa-info-circle me-2"></i>Demo Accounts</h6>
                     <div class="credential-item">
-                        <small><strong><i class="fas fa-crown me-1 text-warning"></i>Admin:</strong> admin@gym.com</small>
+                        <small><strong><i class="fas fa-crown me-1 text-warning"></i>Admin:</strong> admin@hermesfitness.com</small>
                     </div>
                     <div class="credential-item">
-                        <small><strong><i class="fas fa-user-tie me-1 text-success"></i>Trainer:</strong> trainer@gym.com</small>
+                        <small><strong><i class="fas fa-user-tie me-1 text-success"></i>Trainer:</strong> trainer@hermesfitness.com</small>
                     </div>
                     <div class="credential-item">
-                        <small><strong><i class="fas fa-user me-1 text-primary"></i>Member:</strong> member@gym.com</small>
+                        <small><strong><i class="fas fa-user me-1 text-primary"></i>Member:</strong> john@example.com</small>
                     </div>
                     <div class="text-center mt-2">
                         <small class="text-muted"><i class="fas fa-lock me-1"></i>Password: <strong>password</strong></small>

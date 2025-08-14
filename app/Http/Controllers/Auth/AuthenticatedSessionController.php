@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             case 'trainer':
                 return redirect()->intended(route('trainer.dashboard'));
             case 'member':
-                return redirect()->intended(route('member.dashboard'));
+                return redirect()->intended(route('customer.dashboard'));
             default:
                 return redirect()->intended(route('dashboard', absolute: false));
         }

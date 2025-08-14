@@ -86,10 +86,10 @@ Route::get('/create-test-users', function () {
             [
                 'description' => 'Classic upper body exercise',
                 'category' => 'strength',
-                'muscle_groups' => 'Chest, Shoulders, Triceps',
-                'equipment' => 'None',
-                'difficulty' => 'beginner',
-                'duration' => 15,
+                'muscle_group' => 'chest',
+                'difficulty_level' => 'beginner',
+                'equipment_needed' => 'None',
+                'duration_minutes' => 15,
                 'is_active' => true,
             ]
         );
@@ -99,10 +99,10 @@ Route::get('/create-test-users', function () {
             [
                 'description' => 'Cardiovascular exercise',
                 'category' => 'cardio',
-                'muscle_groups' => 'Full Body',
-                'equipment' => 'Treadmill',
-                'difficulty' => 'intermediate',
-                'duration' => 30,
+                'muscle_group' => 'full_body',
+                'difficulty_level' => 'intermediate',
+                'equipment_needed' => 'Treadmill',
+                'duration_minutes' => 30,
                 'is_active' => true,
             ]
         );
@@ -132,6 +132,22 @@ Route::get('/test-member-routes', function () {
     }
 
     return $html;
+});
+
+// Custom login route without CSRF protection for testing
+Route::withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+    ->post('login-test', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store'])
+    ->name('login.test');
+
+// Test delete route without CSRF
+Route::delete('/test-delete-workout/{id}', function ($id) {
+    $workout = \App\Models\Trainer\Workout::find($id);
+    if ($workout) {
+        $workout->exercises()->detach();
+        $workout->delete();
+        return response()->json(['message' => 'Workout deleted successfully']);
+    }
+    return response()->json(['message' => 'Workout not found'], 404);
 });
 
 require __DIR__.'/auth.php';

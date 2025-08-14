@@ -86,10 +86,10 @@
                                                     <i class="fas fa-copy"></i>
                                                 </button>
                                             </form>
-                                            <form action="{{ route('trainer.workouts.destroy', $workout) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this workout plan?')">
+                                            <form action="{{ route('trainer.workouts.destroy', $workout) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this workout plan?')">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>

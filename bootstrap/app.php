@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\AllowIframe::class,
         ]);
+        
+        // Temporarily disable CSRF protection for testing
+        $middleware->web(remove: [
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
         // Force asset URLs to use the correct domain
         if (config('app.env') === 'local') {
             URL::forceRootUrl(config('app.url'));
-            URL::forceScheme('https');
+            // Don't force HTTPS in local development
+            // URL::forceScheme('https');
         }
     }
 }
