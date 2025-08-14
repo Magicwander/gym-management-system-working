@@ -34,6 +34,12 @@ class User extends Authenticatable
         'medical_conditions',
         'fitness_goals',
         'trainer_id',
+        'specialization',
+        'experience_years',
+        'certification',
+        'hourly_rate',
+        'bio',
+        'profile_image',
     ];
 
     /**

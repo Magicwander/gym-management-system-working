@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Member;
+use App\Models\Admin\Trainer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -97,7 +98,7 @@ class AccountController extends Controller
     // Trainer Management
     public function trainers()
     {
-        $trainers = User::where('role', 'trainer')->latest()->paginate(15);
+        $trainers = Trainer::latest()->paginate(15);
         return view('admin.trainers.index', compact('trainers'));
     }
     
@@ -126,23 +127,23 @@ class AccountController extends Controller
         $validated['role'] = 'trainer';
         $validated['is_active'] = true;
         
-        User::create($validated);
+        Trainer::create($validated);
         
         return redirect()->route('admin.accounts.trainers.index')
             ->with('success', 'Trainer created successfully.');
     }
     
-    public function showTrainer(User $trainer)
+    public function showTrainer(Trainer $trainer)
     {
         return view('admin.trainers.show', compact('trainer'));
     }
     
-    public function editTrainer(User $trainer)
+    public function editTrainer(Trainer $trainer)
     {
         return view('admin.trainers.edit', compact('trainer'));
     }
     
-    public function updateTrainer(Request $request, User $trainer)
+    public function updateTrainer(Request $request, Trainer $trainer)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -169,7 +170,7 @@ class AccountController extends Controller
             ->with('success', 'Trainer updated successfully.');
     }
     
-    public function destroyTrainer(User $trainer)
+    public function destroyTrainer(Trainer $trainer)
     {
         $trainer->delete();
         return redirect()->route('admin.accounts.trainers.index')

@@ -25,6 +25,7 @@ class Member extends User
         'date_of_birth',
         'gender',
         'address',
+        'role',
         'is_active',
         'emergency_contact',
         'emergency_phone',

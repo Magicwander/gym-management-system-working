@@ -24,6 +24,7 @@ class Trainer extends User
         'date_of_birth',
         'gender',
         'address',
+        'role',
         'is_active',
         'specialization',
         'experience_years',
