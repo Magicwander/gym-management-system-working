@@ -360,8 +360,8 @@
                     @endif
                     <div class="mt-2">
                         <span class="text-muted">Don't have an account? </span>
-                        <a href="{{ route('register') }}">
-                            <i class="fas fa-user-plus me-1"></i>Sign up here
+                        <a href="{{ route('register.customer') }}">
+                            <i class="fas fa-user-plus me-1"></i>Join as Member
                         </a>
                     </div>
                 </div>

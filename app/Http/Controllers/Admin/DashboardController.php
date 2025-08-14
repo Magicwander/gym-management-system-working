@@ -3,41 +3,54 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Membership;
-use App\Models\Workout;
-use App\Models\Exercise;
+use App\Models\Admin\Member;
+use App\Models\Admin\Trainer;
+use App\Models\Admin\Payment;
+use App\Models\Customer\CustomerBooking;
+use App\Models\Customer\PaymentRecord;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $stats = [
-            'total_members' => User::where('role', 'member')->count(),
-            'active_members' => User::where('role', 'member')->where('is_active', true)->count(),
-            'total_trainers' => User::where('role', 'trainer')->count(),
-            'active_memberships' => Membership::where('status', 'active')->count(),
-            'total_workouts' => Workout::count(),
-            'completed_workouts' => Workout::where('status', 'completed')->count(),
-            'total_exercises' => Exercise::count(),
-            'monthly_revenue' => Membership::where('created_at', '>=', now()->startOfMonth())->sum('price'),
+            'total_members' => Member::count(),
+            'active_members' => Member::where('is_active', true)->count(),
+            'total_trainers' => Trainer::count(),
+            'active_trainers' => Trainer::where('is_active', true)->count(),
+            'total_bookings' => CustomerBooking::count(),
+            'confirmed_bookings' => CustomerBooking::confirmed()->count(),
+            'monthly_revenue' => PaymentRecord::thisMonth()->completed()->sum('amount'),
+            'today_revenue' => PaymentRecord::today()->completed()->sum('amount'),
         ];
-
-        $recent_members = User::where('role', 'member')
+        
+        $recentMembers = Member::latest()->take(5)->get();
+        $recentBookings = CustomerBooking::with(['member', 'trainer'])
             ->latest()
             ->take(5)
             ->get();
-
-        $recent_workouts = Workout::with(['user', 'trainer'])
+        
+        $recentPayments = PaymentRecord::with('member')
+            ->completed()
             ->latest()
             ->take(5)
             ->get();
-
-        $membership_stats = Membership::selectRaw('type, COUNT(*) as count')
-            ->groupBy('type')
+        
+        $monthlyStats = PaymentRecord::selectRaw('DATE(created_at) as date, SUM(amount) as total')
+            ->where('created_at', '>=', now()->startOfMonth())
+            ->where('status', 'completed')
+            ->groupBy('date')
+            ->orderBy('date')
             ->get();
-
-        return view('admin.dashboard', compact('stats', 'recent_members', 'recent_workouts', 'membership_stats'));
+        
+        return view('admin.dashboard', compact(
+            'stats',
+            'recentMembers',
+            'recentBookings',
+            'recentPayments',
+            'monthlyStats'
+        ));
     }
 }

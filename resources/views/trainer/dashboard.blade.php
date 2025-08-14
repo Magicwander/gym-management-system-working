@@ -1,352 +1,70 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Trainer Dashboard - Hermes Fitness</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            min-height: 100vh;
-        }
-        
-        .dashboard-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin: 2rem;
-            padding: 2rem;
-        }
-        
-        .welcome-header {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            border-left: 4px solid #28a745;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card.primary {
-            border-left-color: #007bff;
-        }
-        
-        .stat-card.warning {
-            border-left-color: #ffc107;
-        }
-        
-        .stat-card.info {
-            border-left-color: #17a2b8;
-        }
-        
-        .client-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-            border-left: 4px solid #28a745;
-        }
-        
-        .workout-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-        }
-        
-        .btn-custom {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 0.8rem 2rem;
-            font-weight: 600;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
-            color: white;
-        }
-        
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            color: white !important;
-        }
-        
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8) !important;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover {
-            color: white !important;
-        }
-        
-        .trainer-badge {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #333;
-            border-radius: 10px;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-dumbbell me-2"></i>Hermes Fitness
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('trainer.dashboard') }}">
-                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-users me-1"></i>My Clients
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-calendar me-1"></i>Schedule
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-dumbbell me-1"></i>Exercises
-                        </a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-tie me-1"></i>{{ auth()->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); this.closest('form').submit();">
-                                        Logout
-                                    </a>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+@extends('trainer.layouts.app')
 
-    <div class="dashboard-container">
-        <!-- Welcome Header -->
-        <div class="welcome-header">
-            <div class="trainer-badge">
-                <i class="fas fa-star me-2"></i>Professional Trainer
-            </div>
-            <h1><i class="fas fa-user-tie me-2"></i>Welcome, Coach {{ auth()->user()->name }}!</h1>
-            <p class="mb-0">Inspiring transformations, one workout at a time</p>
-        </div>
+@section('title', 'Trainer Dashboard')
+@section('page-title', 'Dashboard Overview')
 
-        <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">Assigned Workouts</h6>
-                            <h3 class="mb-0">{{ auth()->user()->assignedWorkouts->count() }}</h3>
+@section('content')
+<div class="container-fluid">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-white-50">Total Bookings</div>
+                            <div class="h5 mb-0 font-weight-bold text-white">{{ $stats['total_bookings'] }}</div>
                         </div>
-                        <i class="fas fa-running fa-2x text-success"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-3">
-                <div class="stat-card primary">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">Active Clients</h6>
-                            <h3 class="mb-0">{{ auth()->user()->assignedWorkouts->pluck('user_id')->unique()->count() }}</h3>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-check fa-2x text-white-50"></i>
                         </div>
-                        <i class="fas fa-users fa-2x text-primary"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-3">
-                <div class="stat-card warning">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">This Week</h6>
-                            <h3 class="mb-0">{{ auth()->user()->assignedWorkouts->where('workout_date', '>=', now()->startOfWeek())->count() }}</h3>
-                        </div>
-                        <i class="fas fa-calendar-week fa-2x text-warning"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3 mb-3">
-                <div class="stat-card info">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-muted mb-1">Completed</h6>
-                            <h3 class="mb-0">{{ auth()->user()->assignedWorkouts->where('status', 'completed')->count() }}</h3>
-                        </div>
-                        <i class="fas fa-check-circle fa-2x text-info"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Recent Workouts -->
-            <div class="col-md-8">
-                <h4 class="mb-3"><i class="fas fa-clipboard-list me-2"></i>Recent Assigned Workouts</h4>
-                @forelse(auth()->user()->assignedWorkouts->take(5) as $workout)
-                <div class="workout-card">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="mb-1">{{ $workout->name }}</h6>
-                            <p class="text-muted mb-1">
-                                <i class="fas fa-user me-1"></i>{{ $workout->user->name }} • 
-                                <i class="fas fa-calendar me-1"></i>{{ $workout->workout_date->format('M d, Y') }}
-                            </p>
-                            <small class="text-muted">
-                                {{ ucfirst($workout->type) }} workout
-                                @if($workout->total_duration_minutes)
-                                    • {{ $workout->total_duration_minutes }} minutes
-                                @endif
-                            </small>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card success h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-white-50">Today's Sessions</div>
+                            <div class="h5 mb-0 font-weight-bold text-white">{{ $stats['today_bookings'] }}</div>
                         </div>
-                        <div class="text-end">
-                            <span class="badge bg-{{ $workout->status === 'completed' ? 'success' : ($workout->status === 'in_progress' ? 'warning' : 'secondary') }} mb-2">
-                                {{ ucfirst($workout->status) }}
-                            </span>
-                            <br>
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-outline-success btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-white-50"></i>
                         </div>
                     </div>
                 </div>
-                @empty
-                <div class="text-center py-5">
-                    <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
-                    <h5 class="text-muted">No workouts assigned yet</h5>
-                    <p class="text-muted">Start creating personalized workout plans for your clients!</p>
-                    <button class="btn btn-custom">Create First Workout</button>
-                </div>
-                @endforelse
             </div>
-            
-            <!-- Quick Actions & Clients -->
-            <div class="col-md-4">
-                <h4 class="mb-3"><i class="fas fa-bolt me-2"></i>Quick Actions</h4>
-                <div class="d-grid gap-2 mb-4">
-                    <button class="btn btn-custom">
-                        <i class="fas fa-plus me-2"></i>Create Workout Plan
-                    </button>
-                    <button class="btn btn-outline-primary">
-                        <i class="fas fa-users me-2"></i>View All Clients
-                    </button>
-                    <button class="btn btn-outline-success">
-                        <i class="fas fa-calendar-plus me-2"></i>Schedule Session
-                    </button>
-                    <button class="btn btn-outline-info">
-                        <i class="fas fa-chart-line me-2"></i>Client Progress
-                    </button>
-                </div>
-                
-                <h5><i class="fas fa-users me-2"></i>Recent Clients</h5>
-                @php
-                    $recentClients = auth()->user()->assignedWorkouts->pluck('user')->unique('id')->take(3);
-                @endphp
-                @forelse($recentClients as $client)
-                <div class="client-card">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                <i class="fas fa-user"></i>
-                            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card warning h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-white-50">Active Clients</div>
+                            <div class="h5 mb-0 font-weight-bold text-white">{{ $stats['active_clients'] }}</div>
                         </div>
-                        <div>
-                            <h6 class="mb-0">{{ $client->name }}</h6>
-                            <small class="text-muted">{{ $client->email }}</small>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-white-50"></i>
                         </div>
                     </div>
                 </div>
-                @empty
-                <div class="text-center py-3">
-                    <i class="fas fa-users fa-2x text-muted mb-2"></i>
-                    <p class="text-muted mb-0">No clients assigned yet</p>
-                </div>
-                @endforelse
-                
-                <div class="mt-4">
-                    <h5><i class="fas fa-trophy me-2"></i>Trainer Stats</h5>
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <div class="border rounded p-2">
-                                <h4 class="text-success mb-0">{{ auth()->user()->assignedWorkouts->where('status', 'completed')->count() }}</h4>
-                                <small class="text-muted">Completed</small>
-                            </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card info h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">Workout Plans</div>
+                            <div class="h5 mb-0 font-weight-bold">{{ $stats['total_workouts'] }}</div>
                         </div>
-                        <div class="col-6">
-                            <div class="border rounded p-2">
-                                <h4 class="text-primary mb-0">{{ auth()->user()->assignedWorkouts->pluck('user_id')->unique()->count() }}</h4>
-                                <small class="text-muted">Clients</small>
-                            </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dumbbell fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -354,7 +72,94 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!-- Today's Schedule -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Today's Schedule</h5>
+                    <a href="{{ route('trainer.bookings.day-view') }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-calendar-day me-1"></i>Day View
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if($todayBookings->count() > 0)
+                        <div class="row">
+                            @foreach($todayBookings as $booking)
+                                <div class="col-md-4 mb-3">
+                                    <div class="card border-start border-success border-3">
+                                        <div class="card-body">
+                                            <h6 class="card-title">{{ $booking->start_time->format('g:i A') }}</h6>
+                                            <p class="card-text">
+                                                <strong>{{ $booking->member->name }}</strong><br>
+                                                <small class="text-muted">{{ ucfirst(str_replace('_', ' ', $booking->session_type)) }}</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">No sessions scheduled for today.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Upcoming Sessions</h5>
+                </div>
+                <div class="card-body">
+                    @if($upcomingBookings->count() > 0)
+                        <div class="list-group list-group-flush">
+                            @foreach($upcomingBookings as $booking)
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">{{ $booking->member->name }}</h6>
+                                        <small class="text-muted">{{ $booking->booking_date->format('M j, Y') }} at {{ $booking->start_time->format('g:i A') }}</small>
+                                    </div>
+                                    <span class="badge bg-primary">{{ ucfirst(str_replace('_', ' ', $booking->session_type)) }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">No upcoming sessions.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Recent Workouts</h5>
+                </div>
+                <div class="card-body">
+                    @if($recentWorkouts->count() > 0)
+                        <div class="list-group list-group-flush">
+                            @foreach($recentWorkouts as $workout)
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">{{ $workout->name }}</h6>
+                                        <small class="text-muted">{{ $workout->member->name }} - {{ $workout->workout_date->format('M j, Y') }}</small>
+                                    </div>
+                                    <span class="badge bg-{{ $workout->status === 'completed' ? 'success' : 'warning' }}">
+                                        {{ ucfirst($workout->status) }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">No recent workouts found.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
