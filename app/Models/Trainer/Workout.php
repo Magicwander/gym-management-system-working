@@ -13,7 +13,7 @@ class Workout extends Model
     
     protected $fillable = [
         'trainer_id',
-        'member_id',
+        'user_id',
         'name',
         'description',
         'workout_date',
@@ -22,12 +22,14 @@ class Workout extends Model
         'calories_target',
         'status',
         'notes',
+        'price_lkr',
     ];
     
     protected $casts = [
         'workout_date' => 'datetime',
         'duration' => 'integer',
         'calories_target' => 'integer',
+        'price_lkr' => 'decimal:2',
     ];
     
     public function trainer()
@@ -37,7 +39,7 @@ class Workout extends Model
     
     public function member()
     {
-        return $this->belongsTo(User::class, 'member_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     public function exercises()

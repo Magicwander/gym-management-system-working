@@ -47,6 +47,7 @@ class WorkoutController extends Controller
             'difficulty_level' => 'required|in:beginner,intermediate,advanced',
             'calories_target' => 'nullable|integer|min:0',
             'notes' => 'nullable|string',
+            'price_lkr' => 'required|numeric|min:0|max:999999.99',
             'exercises' => 'required|array|min:1',
             'exercises.*.exercise_id' => 'required|exists:exercises,id',
             'exercises.*.sets' => 'required|integer|min:1',
@@ -118,6 +119,7 @@ class WorkoutController extends Controller
             'difficulty_level' => 'required|in:beginner,intermediate,advanced',
             'calories_target' => 'nullable|integer|min:0',
             'notes' => 'nullable|string',
+            'price_lkr' => 'required|numeric|min:0|max:999999.99',
             'status' => 'required|in:scheduled,in_progress,completed,cancelled',
             'exercises' => 'required|array|min:1',
             'exercises.*.exercise_id' => 'required|exists:exercises,id',
@@ -161,6 +163,15 @@ class WorkoutController extends Controller
     }
     
     public function markCompleted(Workout $workout)
+    {
+        $this->authorize('update', $workout);
+        
+        $workout->update(['status' => 'completed']);
+        
+        return back()->with('success', 'Workout marked as completed.');
+    }
+
+    public function complete(Workout $workout)
     {
         $this->authorize('update', $workout);
         

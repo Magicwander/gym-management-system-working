@@ -19,7 +19,7 @@ Route::middleware(['auth', 'role:trainer'])->prefix('trainer')->name('trainer.')
         Route::get('/{workout}/edit', [WorkoutController::class, 'edit'])->name('edit');
         Route::put('/{workout}', [WorkoutController::class, 'update'])->name('update');
         Route::delete('/{workout}', [WorkoutController::class, 'destroy'])->name('destroy');
-        Route::patch('/{workout}/complete', [WorkoutController::class, 'markCompleted'])->name('complete');
+        Route::patch('/{workout}/complete', [WorkoutController::class, 'complete'])->name('complete');
         Route::post('/{workout}/duplicate', [WorkoutController::class, 'duplicate'])->name('duplicate');
     });
     
