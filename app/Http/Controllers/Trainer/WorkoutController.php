@@ -7,9 +7,11 @@ use App\Models\Trainer\Workout;
 use App\Models\Exercise;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class WorkoutController extends Controller
 {
+    use AuthorizesRequests;
     public function index()
     {
         $trainer = auth()->user();
@@ -60,6 +62,22 @@ class WorkoutController extends Controller
         $validated['trainer_id'] = auth()->id();
         $validated['status'] = 'scheduled';
         
+        // Map member_id to user_id for database compatibility
+        $validated['user_id'] = $validated['member_id'];
+        unset($validated['member_id']);
+        
+        // Map difficulty_level to type and calories_target to calories_burned
+        // Map difficulty levels to workout types
+        $typeMapping = [
+            'beginner' => 'flexibility',
+            'intermediate' => 'strength', 
+            'advanced' => 'sports'
+        ];
+        $validated['type'] = $typeMapping[$validated['difficulty_level']] ?? 'strength';
+        $validated['calories_burned'] = $validated['calories_target'] ?? 0;
+        unset($validated['difficulty_level']);
+        unset($validated['calories_target']);
+        
         $exercises = $validated['exercises'];
         unset($validated['exercises']);
         
@@ -70,8 +88,8 @@ class WorkoutController extends Controller
             $workout->exercises()->attach($exerciseData['exercise_id'], [
                 'sets' => $exerciseData['sets'],
                 'reps' => $exerciseData['reps'],
-                'weight' => $exerciseData['weight'] ?? null,
-                'rest_time' => $exerciseData['rest_time'] ?? null,
+                'weight_kg' => $exerciseData['weight'] ?? null,
+                'rest_seconds' => $exerciseData['rest_time'] ?? null,
                 'notes' => $exerciseData['notes'] ?? null,
             ]);
         }
@@ -130,6 +148,22 @@ class WorkoutController extends Controller
             'exercises.*.notes' => 'nullable|string',
         ]);
         
+        // Map member_id to user_id for database compatibility
+        $validated['user_id'] = $validated['member_id'];
+        unset($validated['member_id']);
+        
+        // Map difficulty_level to type and calories_target to calories_burned
+        // Map difficulty levels to workout types
+        $typeMapping = [
+            'beginner' => 'flexibility',
+            'intermediate' => 'strength', 
+            'advanced' => 'sports'
+        ];
+        $validated['type'] = $typeMapping[$validated['difficulty_level']] ?? 'strength';
+        $validated['calories_burned'] = $validated['calories_target'] ?? 0;
+        unset($validated['difficulty_level']);
+        unset($validated['calories_target']);
+        
         $exercises = $validated['exercises'];
         unset($validated['exercises']);
         
@@ -141,8 +175,8 @@ class WorkoutController extends Controller
             $workout->exercises()->attach($exerciseData['exercise_id'], [
                 'sets' => $exerciseData['sets'],
                 'reps' => $exerciseData['reps'],
-                'weight' => $exerciseData['weight'] ?? null,
-                'rest_time' => $exerciseData['rest_time'] ?? null,
+                'weight_kg' => $exerciseData['weight'] ?? null,
+                'rest_seconds' => $exerciseData['rest_time'] ?? null,
                 'notes' => $exerciseData['notes'] ?? null,
             ]);
         }

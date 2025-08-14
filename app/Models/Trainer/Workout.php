@@ -18,17 +18,17 @@ class Workout extends Model
         'description',
         'workout_date',
         'duration',
-        'difficulty_level',
-        'calories_target',
+        'calories_burned',
         'status',
         'notes',
         'price_lkr',
+        'type',
     ];
     
     protected $casts = [
         'workout_date' => 'datetime',
         'duration' => 'integer',
-        'calories_target' => 'integer',
+        'calories_burned' => 'integer',
         'price_lkr' => 'decimal:2',
     ];
     
@@ -45,7 +45,7 @@ class Workout extends Model
     public function exercises()
     {
         return $this->belongsToMany(Exercise::class, 'workout_exercises')
-                    ->withPivot('sets', 'reps', 'weight', 'rest_time', 'notes')
+                    ->withPivot('sets', 'reps', 'weight_kg', 'rest_seconds', 'notes')
                     ->withTimestamps();
     }
     
