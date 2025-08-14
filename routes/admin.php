@@ -42,7 +42,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Payment Management
     Route::prefix('payments')->name('payments.')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])->name('index');
+        Route::get('/create', [PaymentController::class, 'create'])->name('create');
+        Route::post('/', [PaymentController::class, 'store'])->name('store');
         Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+        Route::get('/{payment}/edit', [PaymentController::class, 'edit'])->name('edit');
+        Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
+        Route::delete('/{payment}', [PaymentController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-action', [PaymentController::class, 'bulkAction'])->name('bulk-action');
         Route::get('/export/csv', [PaymentController::class, 'exportCsv'])->name('export.csv');
         Route::get('/reports/generate', [PaymentController::class, 'generateReport'])->name('reports.generate');
     });

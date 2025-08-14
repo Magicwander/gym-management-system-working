@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer\PaymentRecord;
+use App\Models\User;
+use App\Models\Customer\CustomerBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
@@ -43,11 +46,131 @@ class PaymentController extends Controller
         
         return view('admin.payments.index', compact('payments', 'stats'));
     }
+
+    public function create()
+    {
+        $members = User::where('role', 'member')->where('is_active', true)->get();
+        $bookings = CustomerBooking::with(['member', 'trainer'])->get();
+        
+        return view('admin.payments.create', compact('members', 'bookings'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'member_id' => 'required|exists:users,id',
+            'booking_id' => 'nullable|exists:trainer_bookings,id',
+            'amount' => 'required|numeric|min:0.01|max:99999.99',
+            'payment_method' => 'required|in:credit_card,debit_card,paypal,cash,bank_transfer',
+            'status' => 'required|in:pending,completed,failed,refunded',
+            'payment_date' => 'required|date',
+            'description' => 'nullable|string|max:1000',
+            'card_last_four' => 'nullable|string|size:4',
+            'card_type' => 'nullable|string|max:50',
+        ]);
+
+        // Generate unique transaction ID
+        $validated['transaction_id'] = PaymentRecord::generateTransactionId();
+
+        PaymentRecord::create($validated);
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', 'Payment record created successfully.');
+    }
     
     public function show(PaymentRecord $payment)
     {
         $payment->load(['member', 'booking.trainer']);
         return view('admin.payments.show', compact('payment'));
+    }
+
+    public function edit(PaymentRecord $payment)
+    {
+        $members = User::where('role', 'member')->where('is_active', true)->get();
+        $bookings = CustomerBooking::with(['member', 'trainer'])->get();
+        
+        return view('admin.payments.edit', compact('payment', 'members', 'bookings'));
+    }
+
+    public function update(Request $request, PaymentRecord $payment)
+    {
+        $validated = $request->validate([
+            'member_id' => 'required|exists:users,id',
+            'booking_id' => 'nullable|exists:trainer_bookings,id',
+            'amount' => 'required|numeric|min:0.01|max:99999.99',
+            'payment_method' => 'required|in:credit_card,debit_card,paypal,cash,bank_transfer',
+            'status' => 'required|in:pending,completed,failed,refunded',
+            'payment_date' => 'required|date',
+            'description' => 'nullable|string|max:1000',
+            'card_last_four' => 'nullable|string|size:4',
+            'card_type' => 'nullable|string|max:50',
+        ]);
+
+        $payment->update($validated);
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', 'Payment record updated successfully.');
+    }
+
+    public function destroy(PaymentRecord $payment)
+    {
+        $transactionId = $payment->transaction_id;
+        $payment->delete();
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', "Payment record '{$transactionId}' deleted successfully.");
+    }
+
+    public function bulkAction(Request $request)
+    {
+        $request->validate([
+            'action' => 'required|in:delete,mark_completed,mark_failed,mark_refunded',
+            'payment_ids' => 'required|json'
+        ]);
+
+        $paymentIds = json_decode($request->payment_ids);
+        $action = $request->action;
+
+        if (empty($paymentIds)) {
+            return redirect()->route('admin.payments.index')
+                ->with('error', 'No payments selected.');
+        }
+
+        $payments = PaymentRecord::whereIn('id', $paymentIds)->get();
+        $count = $payments->count();
+
+        switch ($action) {
+            case 'mark_completed':
+                $payments->each(function ($payment) {
+                    $payment->update(['status' => 'completed']);
+                });
+                $message = "{$count} payments marked as completed.";
+                break;
+
+            case 'mark_failed':
+                $payments->each(function ($payment) {
+                    $payment->update(['status' => 'failed']);
+                });
+                $message = "{$count} payments marked as failed.";
+                break;
+
+            case 'mark_refunded':
+                $payments->each(function ($payment) {
+                    $payment->update(['status' => 'refunded']);
+                });
+                $message = "{$count} payments marked as refunded.";
+                break;
+
+            case 'delete':
+                $payments->each(function ($payment) {
+                    $payment->delete();
+                });
+                $message = "{$count} payment records deleted successfully.";
+                break;
+        }
+
+        return redirect()->route('admin.payments.index')
+            ->with('success', $message);
     }
     
     public function exportCsv(Request $request)
