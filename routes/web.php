@@ -3,15 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TrainerController;
-use App\Http\Controllers\Admin\MemberController;
-use App\Http\Controllers\Admin\TrainerController as AdminTrainerController;
-use App\Http\Controllers\Admin\MembershipController;
-use App\Http\Controllers\Admin\WorkoutController;
-use App\Http\Controllers\Admin\ExerciseController;
-use App\Http\Controllers\EnrollmentController;
-use App\Http\Controllers\PaymentGatewayController;
-use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/', function () {
     return view('frontend.home');
@@ -21,16 +12,10 @@ Route::get('/', function () {
 
 
 
-// Enrollment Routes
-Route::get('/enroll', [EnrollmentController::class, 'create'])->name('enrollment.create');
-Route::post('/enroll', [\App\Http\Controllers\EnrollmentController::class, 'store'])->name('enrollment.store');
-Route::get('/enrollment/payment/success/{membership}', [\App\Http\Controllers\EnrollmentController::class, 'paymentSuccess'])->name('enrollment.payment.success');
-Route::get('/enrollment/payment/cancel/{membership}', [\App\Http\Controllers\EnrollmentController::class, 'paymentCancel'])->name('enrollment.payment.cancel');
-
-// Payment Gateway Routes
-Route::get('/payment-gateway', [PaymentGatewayController::class, 'show'])->name('payment.gateway');
-Route::post('/payment-gateway/process', [PaymentGatewayController::class, 'process'])->name('payment.process');
-Route::post('/payment-webhook', [PaymentGatewayController::class, 'webhook'])->name('payment.webhook');
+// Customer Registration Route
+Route::get('/register-customer', function () {
+    return view('auth.register-customer');
+})->name('register.customer');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -42,61 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Members Management
-    Route::resource('members', MemberController::class);
 
-    // Additional member routes
-    Route::patch('members/{member}/toggle-status', [MemberController::class, 'toggleStatus'])->name('members.toggle-status');
-    Route::post('members/bulk-action', [MemberController::class, 'bulkAction'])->name('members.bulk-action');
-    Route::get('members/export', [MemberController::class, 'export'])->name('members.export');
 
-    // Trainers Management
-    Route::resource('trainers', AdminTrainerController::class);
-
-    // Memberships Management
-    Route::resource('memberships', MembershipController::class);
-
-    // Workouts Management
-    Route::resource('workouts', WorkoutController::class);
-
-    // Exercises Management
-    Route::resource('exercises', ExerciseController::class);
-});
-
-// Trainer Routes
-Route::middleware(['auth', 'role:trainer'])->prefix('trainer')->name('trainer.')->group(function () {
-    Route::get('/dashboard', [TrainerController::class, 'dashboard'])->name('dashboard');
-    Route::get('/clients', [TrainerController::class, 'clients'])->name('clients');
-    Route::get('/workouts', [TrainerController::class, 'workouts'])->name('workouts');
-    Route::get('/workouts/create', [TrainerController::class, 'createWorkout'])->name('workouts.create');
-    Route::post('/workouts', [TrainerController::class, 'storeWorkout'])->name('workouts.store');
-    Route::get('/schedule', [TrainerController::class, 'schedule'])->name('schedule');
-    Route::get('/client-progress/{client?}', [TrainerController::class, 'clientProgress'])->name('client-progress');
-});
-
-// Member Routes
-Route::middleware(['auth', 'role:member'])->prefix('member')->name('member.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\MemberController::class, 'dashboard'])->name('dashboard');
-
-    // Workout management
-    Route::get('/workouts', [\App\Http\Controllers\MemberController::class, 'workouts'])->name('workouts');
-    Route::get('/workouts/book', [\App\Http\Controllers\MemberController::class, 'bookWorkout'])->name('workouts.book');
-    Route::post('/workouts', [\App\Http\Controllers\MemberController::class, 'storeWorkout'])->name('workouts.store');
-    Route::get('/workouts/{workout}', [\App\Http\Controllers\MemberController::class, 'showWorkout'])->name('workouts.show');
-    Route::patch('/workouts/{workout}/cancel', [\App\Http\Controllers\MemberController::class, 'cancelWorkout'])->name('workouts.cancel');
-
-    // Exercise browsing
-    Route::get('/exercises', [\App\Http\Controllers\MemberController::class, 'browseExercises'])->name('exercises');
-    Route::get('/exercises/{exercise}', [\App\Http\Controllers\MemberController::class, 'showExercise'])->name('exercises.show');
-
-    // Progress tracking
-    Route::get('/progress', [\App\Http\Controllers\MemberController::class, 'progress'])->name('progress');
-
-    // Profile management
-    Route::patch('/profile', [\App\Http\Controllers\MemberController::class, 'updateProfile'])->name('profile.update');
-});
+// Load role-based routes
+require __DIR__.'/admin.php';
+require __DIR__.'/trainer.php';
+require __DIR__.'/customer.php';
 
 // Debug route to create test users
 Route::get('/create-test-users', function () {

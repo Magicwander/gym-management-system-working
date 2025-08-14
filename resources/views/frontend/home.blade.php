@@ -221,7 +221,7 @@
             <h6 style="color: rgb(255, 48, 48);">5:00am to 12:00 Midnight</h6>
           </div>
           <div class="card-footer text-center">
-            <a href="{{ route('enrollment.create') }}" class="btn btn-success">Enroll Now</a>
+            <a href="{{ route('register.customer') }}" class="btn btn-success">Join Now</a>
           </div>
         </div>
       </div>
@@ -240,7 +240,7 @@
             <h6 style="color: rgb(255, 48, 48);">5:00am to 4:30pm</h6>
           </div>
           <div class="card-footer text-center">
-            <a href="{{ route('enrollment.create') }}" class="btn btn-success">Enroll Now</a>
+            <a href="{{ route('register.customer') }}" class="btn btn-success">Join Now</a>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@
             <h6 style="color: rgb(255, 48, 48);">5:00am to 12 Midnight</h6>
           </div>
           <div class="card-footer text-center">
-            <a href="{{ route('enrollment.create') }}" class="btn btn-success">Enroll Now</a>
+            <a href="{{ route('register.customer') }}" class="btn btn-success">Join Now</a>
           </div>
         </div>
       </div>
