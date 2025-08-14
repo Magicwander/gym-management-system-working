@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
+        
+        // Add iframe middleware globally for browser testing
+        $middleware->web(append: [
+            \App\Http\Middleware\AllowIframe::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
