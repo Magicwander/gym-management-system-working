@@ -123,35 +123,43 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.members*') ? 'active' : '' }}" href="{{ route('admin.members.index') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.accounts.members*') ? 'active' : '' }}" href="{{ route('admin.accounts.members.index') }}">
                                 <i class="fas fa-users me-2"></i>
                                 Members
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.trainers*') ? 'active' : '' }}" href="{{ route('admin.trainers.index') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.accounts.trainers*') ? 'active' : '' }}" href="{{ route('admin.accounts.trainers.index') }}">
                                 <i class="fas fa-user-tie me-2"></i>
                                 Trainers
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.memberships*') ? 'active' : '' }}" href="{{ route('admin.memberships.index') }}">
-                                <i class="fas fa-id-card me-2"></i>
-                                Memberships
+                            <a class="nav-link {{ request()->routeIs('admin.payments*') ? 'active' : '' }}" href="{{ route('admin.payments.index') }}">
+                                <i class="fas fa-credit-card me-2"></i>
+                                Payments
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.workouts*') ? 'active' : '' }}" href="{{ route('admin.workouts.index') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}" href="{{ route('admin.reports.index') }}">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Reports
+                            </a>
+                        </li>
+                        {{-- Commented out until routes are implemented
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
                                 <i class="fas fa-running me-2"></i>
                                 Workouts
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.exercises*') ? 'active' : '' }}" href="{{ route('admin.exercises.index') }}">
+                            <a class="nav-link" href="#">
                                 <i class="fas fa-dumbbell me-2"></i>
                                 Exercises
                             </a>
                         </li>
+                        --}}
                         <li class="nav-item mt-3">
                             <hr class="text-white-50">
                         </li>

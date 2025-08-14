@@ -26,19 +26,19 @@ class DashboardController extends Controller
             'today_revenue' => PaymentRecord::today()->completed()->sum('amount'),
         ];
         
-        $recentMembers = Member::latest()->take(5)->get();
-        $recentBookings = CustomerBooking::with(['member', 'trainer'])
+        $recent_members = Member::latest()->take(5)->get();
+        $recent_bookings = CustomerBooking::with(['member', 'trainer'])
             ->latest()
             ->take(5)
             ->get();
         
-        $recentPayments = PaymentRecord::with('member')
+        $recent_payments = PaymentRecord::with('member')
             ->completed()
             ->latest()
             ->take(5)
             ->get();
         
-        $monthlyStats = PaymentRecord::selectRaw('DATE(created_at) as date, SUM(amount) as total')
+        $monthly_stats = PaymentRecord::selectRaw('DATE(created_at) as date, SUM(amount) as total')
             ->where('created_at', '>=', now()->startOfMonth())
             ->where('status', 'completed')
             ->groupBy('date')
@@ -47,10 +47,10 @@ class DashboardController extends Controller
         
         return view('admin.dashboard', compact(
             'stats',
-            'recentMembers',
-            'recentBookings',
-            'recentPayments',
-            'monthlyStats'
+            'recent_members',
+            'recent_bookings',
+            'recent_payments',
+            'monthly_stats'
         ));
     }
 }
